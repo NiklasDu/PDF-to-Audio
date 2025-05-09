@@ -8,14 +8,6 @@ Ein Python-Projekt, das eine grafische Benutzeroberfläche (GUI) bereitstellt, u
 - **GUI**: Eine benutzerfreundliche Oberfläche, die mit PyQt6 erstellt wurde.
 - **PDF-Verarbeitung**: (Geplant oder implementiert) Konvertiert PDF-Inhalte in Audio.
 
-## Voraussetzungen
-
-Stelle sicher, dass die folgenden Abhängigkeiten installiert sind:
-
-- Python 3.9 oder höher
-- PyQt6
-- PyMuPDF (für die PDF-Verarbeitung)
-
 ## Installation
 
 1. **Repository klonen**:
@@ -47,8 +39,4 @@ Die Abhängigkeiten sind in der Datei requirements.txt definiert. Hier sind die 
 
 - PyQt6: Für die GUI.
 - PyMuPDF: Für die PDF-Verarbeitung.
-
-**Installiere sie mit**:
-    ```bash
-    pip install -r requirements.txt
 
