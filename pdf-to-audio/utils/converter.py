@@ -28,6 +28,7 @@ class Converter:
             self.view.file_name.setText(str(filename))
 
     def convert_pdf_to_audio(self):
+        self.view.finished_converting.setText("Die Umwandlung kann ein paar Sekunde dauern.")
         def extract_text_from_pdf(pdf_path):
             text = ""
             with fitz.open(pdf_path) as doc:
@@ -36,40 +37,51 @@ class Converter:
 
                 return text
             
-        def text_too_long(text):
-            byte_length = len(text.encode("utf-8"))
-            print(f"Textlänge in Bytes: {byte_length}")
-            if byte_length > 5000:
-                print("⚠️ Achtung: Text ist zu lang für die Google Text-to-Speech API (Limit: 5000 Bytes).")
-                return True
-            else:
-                print("✅ Text ist innerhalb des erlaubten Bereichs.")
-                return False
+        # Text in einzelne Chunks aufteilen, um das Limit von 5000 Bytes pro Anfrage zu umgehen
+        def split_text(text, max_bytes=4500):
+            chunks = []
+            current_chunk = ""
 
+            for paragraph in text.split("\n"):
+                paragraph = paragraph.strip()
+                if not paragraph:
+                    continue
+
+                if len((current_chunk + paragraph).encode("utf-8")) > max_bytes:
+                    chunks.append(current_chunk)
+                    current_chunk = paragraph + "\n"
+                else:
+                    current_chunk += paragraph + "\n"
+
+            if current_chunk:
+                chunks.append(current_chunk)
+
+            return chunks
+            
         pdf_text = extract_text_from_pdf(str(self.chosen_file))
+        client = texttospeech.TextToSpeechClient()
 
-        if text_too_long(pdf_text):
-            self.view.finished_converting.setText("Die Datei ist zu groß. Bitte wähle eine Datei unter 5000 Zeichen.")
-        else:
-            self.view.finished_converting.setText("Die Umwandlung kann ein paar Sekunde dauern.")
-            client = texttospeech.TextToSpeechClient()
-
-            synthesis_input = texttospeech.SynthesisInput(text=pdf_text)
-            voice = texttospeech.VoiceSelectionParams(
+        voice = texttospeech.VoiceSelectionParams(
                 language_code="de-DE", 
                 name="de-DE-Wavenet-F",
                 ssml_gender=texttospeech.SsmlVoiceGender.FEMALE
             )
-            audio_config = texttospeech.AudioConfig(
-                audio_encoding=texttospeech.AudioEncoding.MP3
-            )
+        audio_config = texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3
+        )
 
+        all_audio = b""  # leere Bytefolge
+        for chunk in split_text(pdf_text):  # jeder Textabschnitt unter 5000 Bytes
+            synthesis_input = texttospeech.SynthesisInput(text=chunk)
             response = client.synthesize_speech(
-                input=synthesis_input, voice=voice, audio_config=audio_config
+                input=synthesis_input,
+                voice=voice,
+                audio_config=audio_config
             )
+            all_audio += response.audio_content  # hänge alle Audio-Bytes zusammen
 
-            self.new_mp3 = response.audio_content
-            self.view.finished_converting.setText("Umwandlung war erfolgreich.")
+        self.new_mp3 = all_audio
+        self.view.finished_converting.setText("Umwandlung war erfolgreich.")
 
     def save_file(self):
         file_dialog = QFileDialog(self.view)
