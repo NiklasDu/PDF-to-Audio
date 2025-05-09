@@ -1,6 +1,6 @@
 # ------------------------ Imports ------------------------- #
-from PyQt6.QtCore import Qt, QSize, QTimer
-from PyQt6.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QTextEdit, QPushButton
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QPushButton
 from constants import *
 from PyQt6.QtGui import QPixmap, QFont
 from PyQt6.QtMultimedia import QMediaPlayer
@@ -15,9 +15,6 @@ class MainWindow(QMainWindow):
         self.setFont(QFont("Helvetica Neue", 15))
         self.setWindowTitle("PDFonix")
         self.ui_setup()
-
-        self.chosen_file = ""
-        self.new_mp3 = ""
 
     def ui_setup(self):
         self.converter = Converter(self)

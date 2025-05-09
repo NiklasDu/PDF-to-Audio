@@ -32,7 +32,3 @@ window = MainWindow()
 QTimer.singleShot(2000, window.show)
 
 app.exec()
-
-
-
-
