@@ -45,10 +45,10 @@ Stelle sicher, dass die folgenden Abhängigkeiten installiert sind:
 ## Abhängigkeiten
 Die Abhängigkeiten sind in der Datei requirements.txt definiert. Hier sind die wichtigsten:
 
-PyQt6: Für die GUI.
-PyMuPDF: Für die PDF-Verarbeitung.
+- PyQt6: Für die GUI.
+- PyMuPDF: Für die PDF-Verarbeitung.
 
-Installiere sie mit:
+**Installiere sie mit**:
     ```bash
     pip install -r requirements.txt
 
