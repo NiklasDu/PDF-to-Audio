@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Installer logs
+pip-log.txt
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# VS Code settings
+.vscode/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Platypus-generated apps or app bundles
+*.app/
+
+# PyInstaller or py2app builds
+*.spec
+*.dmg
+*.pkg
+
+# Logs
+*.log
+
+# IDE-specific
+.idea/
+*.iml
+output.mp3
+pdf-to-audio/test.pdf
