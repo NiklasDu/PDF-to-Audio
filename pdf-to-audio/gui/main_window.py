@@ -2,7 +2,7 @@
 from PyQt6.QtCore import Qt, QSize, QTimer
 from PyQt6.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QTextEdit, QPushButton
 from constants import *
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QFont
 from PyQt6.QtMultimedia import QMediaPlayer
 from utils.converter import Converter
 
@@ -12,8 +12,11 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.setFont(QFont("Helvetica Neue", 15))
         self.setWindowTitle("PDFonix")
         self.ui_setup()
+
+        self.chosen_file = ""
 
     def ui_setup(self):
         self.converter = Converter(self)
@@ -25,7 +28,7 @@ class MainWindow(QMainWindow):
         self.logo_label.setFixedHeight(100)
         self.logo_label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
 
-        self.title_text = QLabel("Verwandel deine PDF zu einer Audio Datei.")
+        self.title_text = QLabel("Verwandle deine PDF zu einer Audio Datei.")
         self.title_text.setObjectName("title_text")
         self.title_text.setFixedHeight(50)
         self.title_text.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
@@ -82,7 +85,6 @@ class MainWindow(QMainWindow):
             QWidget {{
                 background-color: {BACKGROUND_COLOR};
                 color: {TEXT_COLOR};
-                font-family: "Helvetica Neue", "Arial", sans-serif;
                 font-size: 15px;
             }}
 

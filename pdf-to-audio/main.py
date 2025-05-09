@@ -5,8 +5,6 @@ from PyQt6.QtWidgets import QApplication, QSplashScreen
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QTimer, Qt
 
-
-
 # ------------------------ Splash Class ------------------------- #
 
 class SplashScreen(QSplashScreen):
