@@ -49,6 +49,7 @@ class Converter:
         if text_too_long(pdf_text):
             self.view.finished_converting.setText("Die Datei ist zu groß. Bitte wähle eine Datei unter 5000 Zeichen.")
         else:
+            self.view.finished_converting.setText("Die Umwandlung kann ein paar Sekunde dauern.")
             client = texttospeech.TextToSpeechClient()
 
             synthesis_input = texttospeech.SynthesisInput(text=pdf_text)
@@ -65,10 +66,30 @@ class Converter:
                 input=synthesis_input, voice=voice, audio_config=audio_config
             )
 
-            with open("output.mp3", "wb") as out:
-                out.write(response.audio_content)
-                print('Audio content written to file "output.mp3"')
+            self.view.new_mp3 = response.audio_content
+
+            # with open("output.mp3", "wb") as out:
+            #     out.write(response.audio_content)
+            #     print('Audio content written to file "output.mp3"')
             self.view.finished_converting.setText("Umwandlung war erfolgreich.")
 
     def save_file(self):
-        pass
+        file_dialog = QFileDialog(self.view)
+        file_dialog.setWindowTitle("Verzeichnis auswählen")
+        file_dialog.setDirectory(QDir.homePath())
+        file_dialog.setFileMode(QFileDialog.FileMode.Directory)
+        file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
+
+        file_path, _ = file_dialog.getSaveFileName(self.view, "MP3 speichern unter", QDir.homePath(),
+                                                "MP3 Datein (*.mp3)")
+        
+        if file_path:
+            if not file_path.endswith(('.mp3')):
+                file_path += '.mp3'
+            try:
+                with open(file_path, "wb") as audio_file:
+                    audio_file.write(self.view.new_mp3)
+                    print(f"Audio content written ti file {file_path}")
+                self.view.finished_converting.setText("Die Datei wurde erfolgreich gespeichert.")
+            except Exception as e:
+                self.view.finished_converting.setText(f"Fehler beim Speichern der Datei: {str(e)}")

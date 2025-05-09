@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
         self.ui_setup()
 
         self.chosen_file = ""
+        self.new_mp3 = ""
 
     def ui_setup(self):
         self.converter = Converter(self)
